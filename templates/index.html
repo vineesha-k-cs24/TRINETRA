@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRINETRA - AI Digital Authenticity & Forensic Traceability</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <span class="brand-icon">👁️</span>
+            <h1>TRINETRA</h1>
+        </div>
+        <p>AI-Assisted Digital Authenticity Verification and Forensic Traceability System</p>
+    </header>
+
+    <div class="container">
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'analyzeTab')">🔍 Forensic Analysis & AI Detection</button>
+            <button class="tab-btn" onclick="switchTab(event, 'verifyTab')">🔒 Fingerprint & Traceability Check</button>
+        </div>
+
+        <!-- TAB 1: ANALYZE -->
+        <div id="analyzeTab" class="panel active">
+            <div class="card">
+                <h2>Forensic Media Analysis</h2>
+                <p class="desc">
+                    Upload an image or video to evaluate authenticity using Vision Transformers (ViT),
+                    Error Level Analysis (ELA), and cryptographic SHA-256 fingerprinting.
+                </p>
+
+                <div class="upload-box" id="dropZone" onclick="document.getElementById('mediaInput').click()">
+                    <div class="upload-icon">📁</div>
+                    <p id="fileNameDisplay"><strong>Click or drag & drop</strong> file to inspect</p>
+                    <span style="font-size: 0.8rem; color: #6b7280;">Supported formats: JPG, PNG, WEBP, MP4, AVI, MOV</span>
+                    <input type="file" id="mediaInput" accept="image/*,video/*" onchange="handleFileSelect(this)">
+                </div>
+
+                <button class="btn-primary" id="analyzeBtn" onclick="runAnalysis()">
+                    <span>Run TRINETRA Forensic Scan</span> 🚀
+                </button>
+
+                <div class="loader" id="analyzeLoader">
+                    <div class="spinner"></div>
+                    <p>Executing Deepfake AI model & computing forensic artifacts...</p>
+                </div>
+            </div>
+
+            <!-- RESULT CARD -->
+            <div class="card results-card" id="analysisResultCard">
+                <div class="verdict-banner" id="verdictBanner">
+                    <div>
+                        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;" id="verdictSubtitle">TRINETRA AI VERDICT</div>
+                        <div class="verdict-title" id="verdictText">Authentic</div>
+                    </div>
+                    <div class="verdict-score" id="verdictConfidence">98.5%</div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- Media Preview -->
+                    <div class="evidence-box">
+                        <h4>Analyzed Media</h4>
+                        <div id="mediaContainer">
+                            <img id="previewImg" src="" alt="Analyzed Media">
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.85rem; color: #9ca3af;">
+                            <span id="metaFilename">file.jpg</span> • <span id="metaFilesize">0 KB</span>
+                        </div>
+                    </div>
+
+                    <!-- Explainability / ELA Heatmap -->
+                    <div class="evidence-box" id="elaEvidenceBox">
+                        <h4>Explainability: Error Level Analysis (ELA)</h4>
+                        <img id="elaImg" src="" alt="Error Level Analysis">
+                        <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 8px;">
+                            Identifies compression differentials. Uniform patterns indicate unaltered content; bright clusters flag localized manipulation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Traceability & Digital Fingerprint -->
+                <div class="card" style="margin-bottom: 0; background: var(--bg-card);">
+                    <h3>🔐 Cryptographic Digital Fingerprint (SHA-256)</h3>
+                    <p class="desc" style="margin-bottom: 6px;">
+                        Unique immutable hash generated for forensic chain-of-custody and traceability.
+                    </p>
+                    <div class="fingerprint-box" id="fingerprintDisplay">
+                        -
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                        <button class="copy-btn" onclick="copyFingerprint()">📋 Copy Fingerprint</button>
+                        <button class="copy-btn" style="background: #059669;" onclick="printCertificate()">🖨️ Generate Forensic Certificate</button>
+                    </div>
+
+                    <h4 style="margin-top: 20px; font-size: 0.95rem;">Forensic Integrity & Metadata Indicators</h4>
+                    <div id="signalsContainer" style="margin-top: 8px;">
+                        <!-- Badges dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: VERIFY -->
+        <div id="verifyTab" class="panel">
+            <div class="card">
+                <h2>Forensic Traceability & Integrity Verification</h2>
+                <p class="desc">
+                    Verify whether a digital asset has been altered, manipulated, or re-encoded by comparing its current fingerprint against the recorded original hash.
+                </p>
+
+                <div class="upload-box" onclick="document.getElementById('verifyInput').click()">
+                    <div class="upload-icon">🔍</div>
+                    <p id="verifyFileNameDisplay">Select candidate file to verify against original record</p>
+                    <input type="file" id="verifyInput" accept="image/*,video/*" onchange="handleVerifyFileSelect(this)">
+                </div>
+
+                <div style="margin-top: 18px;">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Original Registered SHA-256 Fingerprint:</label>
+                    <input type="text" class="input-field" id="expectedHashInput" placeholder="Paste recorded 64-character SHA-256 fingerprint">
+                </div>
+
+                <button class="btn-primary" id="verifyBtn" onclick="runVerification()">
+                    <span>Verify Content Integrity</span> 🛡️
+                </button>
+
+                <div class="loader" id="verifyLoader">
+                    <div class="spinner"></div>
+                    <p>Computing SHA-256 and checking against original record...</p>
+                </div>
+
+                <div id="verifyOutcome" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
