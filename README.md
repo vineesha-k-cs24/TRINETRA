@@ -12,7 +12,7 @@
   - Nagarjun Chadaga CV (`4SF23CS125`)
   - Srinivasa Puranik (`4SF24CS219`)
   - Chiruvella Jishvitha (`4SF24CS044`)
-  - Vineesha K (`4SF23CS004`)
+  - Vineesha K (`4SF24CS247`)
 
 ---
 
